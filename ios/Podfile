@@ -1,5 +1,5 @@
 # Uncomment this line to define a global platform for your project
-# platform :ios, '9.0'
+platform :ios, '10.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -27,12 +27,17 @@ require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelpe
 
 flutter_ios_podfile_setup
 
-target 'Runner' do
+target 'Runner' 
+  # There's a bug in FirebaseFirestore 9.2.0. Using main for now, should be fixed in 9.3.0.
+  # https://github.com/firebase/flutterfire/issues/9015#issuecomment-1173604569  
+  pod 'FirebaseFirestore', :git => 'https://github.com/invertase/firestore-ios-sdk-frameworks.git', :branch => 'main'
   use_frameworks!
   use_modular_headers!
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
-end
+# Commented out the 'end' below to fix a compilation error that started after switching to the invertase main branch
+# This will probably need to be uncommented out once we switch to 9.3.0
+# end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
