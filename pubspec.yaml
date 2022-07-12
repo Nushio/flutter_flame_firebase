@@ -37,6 +37,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_core: ^1.19.1
   firebase_auth: ^3.4.1
+  cloud_firestore: ^3.2.1
+  bloc: ^8.0.3
+  equatable: ^2.0.3
+  flame_bloc: ^1.6.0
+  flutter_bloc: ^8.0.1
 
 dev_dependencies:
   flutter_test:
