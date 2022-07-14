@@ -4,15 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_flame_firebase/features/authentication/bloc/authentication_bloc.dart';
 import 'package:flutter_flame_firebase/game/tutorial_game.dart';
-import 'package:flutter_flame_firebase/widgets/sign_in_menu.dart';
-import 'package:flutter_flame_firebase/widgets/sign_out_menu.dart';
 
-class MainMenu extends StatelessWidget {
-  static const id = 'MainMenu';
+class SignOutMenu extends StatelessWidget {
+  static const id = 'SignOutMenu';
 
   final TutorialGame gameRef;
 
-  const MainMenu(this.gameRef, {Key? key}) : super(key: key);
+  const SignOutMenu(this.gameRef, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,16 +40,18 @@ class MainMenu extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      gameRef.overlays.remove(MainMenu.id);
-                      if (context.read<AuthenticationBloc>().state
-                          is AuthenticationSuccess) {
-                        gameRef.overlays.add(SignOutMenu.id);
-                      } else {
-                        gameRef.overlays.add(SignInMenu.id);
+                      if (gameRef.userDataSubscription != null) {
+                        gameRef.userDataSubscription?.cancel();
+                        gameRef.firestoreData.text = 'Firebase UserDoc: ???';
+                        gameRef.firestoreListenData.text =
+                            'Firebase UserDocL: ???';
                       }
+                      context
+                          .read<AuthenticationBloc>()
+                          .add(AuthenticationSignedOut());
                     },
                     child: const Text(
-                      'Play',
+                      'Logout',
                       style: TextStyle(
                         fontSize: 30,
                       ),
