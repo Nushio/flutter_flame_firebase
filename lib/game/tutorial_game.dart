@@ -42,14 +42,12 @@ class TutorialGame extends FlameGame
       ),
     ], children: [
       FlameBlocListener<AuthenticationBloc, AuthenticationState>(
-        bloc: authBloc,
         onNewState: (state) {
           print(state);
           _updatePlayerState(state);
         },
       ),
       FlameBlocListener<FirestoreBloc, FirestoreState>(
-        bloc: firestoreBloc,
         onNewState: (state) {
           _updateFirestoreData(state);
         },

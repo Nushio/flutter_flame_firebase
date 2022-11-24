@@ -19,7 +19,10 @@ class FirestoreService {
   Future<String> retrieveUserName(UserModel user) async {
     DocumentSnapshot<Map<String, dynamic>> snapshot =
         await _db.collection("users").doc(user.uid).get();
-    return snapshot.data()!["displayName"];
+    if (snapshot.exists)
+      return snapshot.data()!["displayName"];
+    else
+      return "Unknown Player";
   }
 
   Stream<UserModel> listenUserData(String docId) {
