@@ -20,6 +20,7 @@ class AuthenticationBloc
         try {
           UserModel user =
               await _authenticationRepository.getCurrentUser().first;
+          print(user.uid);
           if (user.uid != "uid") {
             String? displayName =
                 await _authenticationRepository.retrieveUserName(user);

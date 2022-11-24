@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -14,24 +17,23 @@ import 'app_bloc_observer.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  BlocOverrides.runZoned(
-    () => runApp(MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) =>
-              AuthenticationBloc(AuthenticationRepositoryImpl())
-                ..add(AuthenticationStarted()),
-        ),
-        BlocProvider(
-          create: (context) => FirestoreBloc(FirestoreRepositoryImpl()),
-        )
-      ],
-      child: const TutorialGameApp(),
-    )),
-    blocObserver: AppBlocObserver(),
-  );
+  await runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
+    Bloc.observer = AppBlocObserver();
+    runApp(MultiBlocProvider(providers: [
+      BlocProvider(
+        create: (context) => AuthenticationBloc(AuthenticationRepositoryImpl())
+          ..add(AuthenticationStarted()),
+      ),
+      BlocProvider(
+        create: (context) => FirestoreBloc(FirestoreRepositoryImpl()),
+      )
+    ], child: const TutorialGameApp()));
+  }, (error, stackTrace) {
+    log(error.toString(), stackTrace: stackTrace);
+  });
 }
 
 class TutorialGameApp extends StatelessWidget {

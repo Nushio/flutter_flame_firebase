@@ -12,7 +12,8 @@ import 'package:flutter_flame_firebase/widgets/main_menu.dart';
 import 'package:flutter_flame_firebase/widgets/sign_in_menu.dart';
 import 'package:flutter_flame_firebase/widgets/sign_out_menu.dart';
 
-class TutorialGame extends FlameGame with HasKeyboardHandlerComponents {
+class TutorialGame extends FlameGame
+    with HasKeyboardHandlerComponents, HasCollisionDetection {
   TutorialGame({required this.authBloc, required this.firestoreBloc});
 
   final AuthenticationBloc authBloc;
@@ -43,6 +44,7 @@ class TutorialGame extends FlameGame with HasKeyboardHandlerComponents {
       FlameBlocListener<AuthenticationBloc, AuthenticationState>(
         bloc: authBloc,
         onNewState: (state) {
+          print(state);
           _updatePlayerState(state);
         },
       ),

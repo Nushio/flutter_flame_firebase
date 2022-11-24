@@ -48,6 +48,7 @@ class MainMenu extends StatelessWidget {
                         gameRef.overlays.add(SignOutMenu.id);
                       } else {
                         gameRef.overlays.add(SignInMenu.id);
+                        // gameRef.overlays.notifyListeners();
                       }
                     },
                     child: const Text(

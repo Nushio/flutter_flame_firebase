@@ -9,7 +9,7 @@ class SignInMenu extends StatefulWidget {
   static const id = 'SignInMenu';
   final TutorialGame gameRef;
 
-  const SignInMenu(final this.gameRef, {Key? key}) : super(key: key);
+  const SignInMenu(this.gameRef, {Key? key}) : super(key: key);
 
   @override
   State<SignInMenu> createState() => _SignInMenuState();
@@ -30,7 +30,7 @@ class _SignInMenuState extends State<SignInMenu> {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           color: Colors.black.withAlpha(100),
           child: ConstrainedBox(
-            constraints: BoxConstraints(minWidth: 48),
+            constraints: const BoxConstraints(minWidth: 48),
             child: FittedBox(
               child: IntrinsicWidth(
                 child: Padding(
@@ -113,6 +113,20 @@ class _SignInMenuState extends State<SignInMenu> {
                         },
                         child: const Text(
                           'Login',
+                          style: TextStyle(
+                            fontSize: 30,
+                          ),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          // gameRef.overlays.remove(SignInMenu.id);
+                          widget.gameRef.authBloc.add(
+                              const AuthenticationRequested(
+                                  type: AuthType.signInAnonymously));
+                        },
+                        child: const Text(
+                          'Anon Login',
                           style: TextStyle(
                             fontSize: 30,
                           ),
